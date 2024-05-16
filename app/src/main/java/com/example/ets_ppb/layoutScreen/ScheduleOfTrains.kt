@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.KeyboardArrowUp
 import androidx.compose.material3.BottomAppBar
@@ -37,24 +38,12 @@ import androidx.compose.ui.unit.sp
 
 import androidx.navigation.NavHostController
 import com.example.ets_ppb.ScreenC
+import com.example.ets_ppb.data.TrainsData
+import java.text.NumberFormat
 import java.time.Duration
 import java.time.LocalTime
+import java.util.Locale
 import kotlin.random.Random
-
-val famousTrainNames = listOf(
-    "Argo Bromo Anggrek",
-    "Argo Dwipangga",
-    "Argo Parahyangan",
-    "Taksaka Pagi",
-    "Gajayana"
-)
-
-val trainClassType = listOf(
-    "Ekonomi",
-    "Eksekutif",
-    "Bisnis",
-    "Super Eksekutif"
-)
 
 @Composable
 fun ScheduleOfTrains(navController: NavHostController, args: ScreenC){
@@ -71,12 +60,12 @@ fun ScheduleOfTrains(navController: NavHostController, args: ScreenC){
                 val totalSeats = Random.nextInt(100, 201) // Total seats between 100 and 200
                 val bookedSeats = Random.nextInt(0, totalSeats + 1)
 
-                val trainName = famousTrainNames.random()
-                val classType = trainClassType.random()
+                val trainName = TrainsData.famousTrainNames.random()
+                val classType = TrainsData.trainClasses.random()
                 val departureTime = LocalTime.of(Random.nextInt(0, 22), Random.nextInt(0, 60))
                 val arrivalTime = departureTime.plusHours(Random.nextLong(2, 8)).plusMinutes(Random.nextLong(0, 60))
 
-                val price = (Random.nextInt(0, 6) * 10000) + 150000
+                val price = (Random.nextInt(0, 751) * 100) + 150000
 
                 val duration = Duration.between(departureTime, arrivalTime).abs()
 
@@ -89,7 +78,7 @@ fun ScheduleOfTrains(navController: NavHostController, args: ScreenC){
                     classType = classType,
                     departureTime = departureTime.toString(),
                     arrivalTime = arrivalTime.toString(),
-                    price = "Rp $price",
+                    price = formatCurrency(price.toDouble()),
                     duration = durationString,
                     bookedSeats = bookedSeats,
                     totalSeats = totalSeats
@@ -107,12 +96,26 @@ fun TopBar(navController: NavHostController, args: ScreenC) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = "${args.departureStation} -> ${args.arrivalStation}",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                Row (
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ){
+                    Text(
+                        text = args.departureStation,
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = null,
+                        modifier = Modifier.padding(horizontal = 4.dp))
+                    Text(
+                        text = args.arrivalStation,
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
                 Text(
                     text = "${args.totalPassangers} Penumpang",
                     color = Color.White,
@@ -239,7 +242,7 @@ fun TrainCard(
                 ) {
                     Text(text = departureTime, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = " -> ", fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                    Icon(imageVector = Icons.Filled.ArrowForward, contentDescription = null)
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(text = arrivalTime, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
                 }
@@ -259,4 +262,11 @@ fun TrainCard(
             }
         }
     }
+}
+
+fun formatCurrency(amount: Double): String {
+    val localeID = Locale("in", "ID")
+    val numberFormat = NumberFormat.getCurrencyInstance(localeID)
+    numberFormat.maximumFractionDigits = 0
+    return numberFormat.format(amount).replace("Rp", "Rp ")
 }

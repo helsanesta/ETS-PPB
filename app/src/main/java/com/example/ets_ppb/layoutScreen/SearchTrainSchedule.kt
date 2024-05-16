@@ -54,23 +54,15 @@ import androidx.navigation.NavHostController
 import com.example.ets_ppb.R
 import com.example.ets_ppb.ScreenB
 import com.example.ets_ppb.ScreenC
+import com.example.ets_ppb.data.StationsData
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
-val stations = listOf(
-    "Gambir (GMR)",
-    "Bandung (BD)",
-    "Yogyakarta (YK)",
-    "Surabaya (SBY)",
-    "Jakarta (JKT)",
-    "Semarang (SMG)",
-)
-
 @Composable
 fun SearchTrainSchedule(navController: NavHostController, args: ScreenB) {
-    var selectedDepartureStation by remember { mutableStateOf(stations[0]) }
-    var selectedArrivalStation by remember { mutableStateOf(stations[1]) }
+    var selectedDepartureStation by remember { mutableStateOf(StationsData.stations[0]) }
+    var selectedArrivalStation by remember { mutableStateOf(StationsData.stations[1]) }
     var selectedDate by remember { mutableStateOf("") }
     var adultCount by remember { mutableStateOf("") }
     var childCount by remember { mutableStateOf("") }
@@ -102,7 +94,7 @@ fun SearchTrainSchedule(navController: NavHostController, args: ScreenB) {
                 )
                 DynamicSelectTextField(
                     selectedValue = selectedDepartureStation,
-                    options = stations,
+                    options = StationsData.stations,
                     label = "Pilih Stasiun Keberangkatan",
                     onValueChangedEvent = { newValue ->
                         selectedDepartureStation = newValue
@@ -111,7 +103,7 @@ fun SearchTrainSchedule(navController: NavHostController, args: ScreenB) {
 
                 DynamicSelectTextField(
                     selectedValue = selectedArrivalStation,
-                    options = stations,
+                    options = StationsData.stations,
                     label = "Pilih Stasiun Tujuan",
                     onValueChangedEvent = { newValue ->
                         selectedArrivalStation = newValue
