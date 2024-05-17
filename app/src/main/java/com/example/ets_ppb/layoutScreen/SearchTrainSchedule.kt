@@ -47,6 +47,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -122,7 +123,10 @@ fun SearchTrainSchedule(navController: NavHostController, args: ScreenB) {
                     value = adultCount,
                     onValueChange = { adultCount = it },
                     label = { Text("Jumlah Penumpang Dewasa") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFED6B23), // Atur warna saat fokus
                         unfocusedBorderColor = Color.Gray, // Atur warna saat tidak fokus
@@ -142,7 +146,10 @@ fun SearchTrainSchedule(navController: NavHostController, args: ScreenB) {
                     value = childCount,
                     onValueChange = { childCount = it },
                     label = { Text("Jumlah Penumpang Anak-Anak") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done
+                    ),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color(0xFFED6B23), // Atur warna saat fokus
                         unfocusedBorderColor = Color.Gray, // Atur warna saat tidak fokus
